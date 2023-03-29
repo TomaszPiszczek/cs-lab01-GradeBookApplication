@@ -13,28 +13,29 @@ namespace GradeBook.GradeBooks
             Type = Enums.GradeBookType.Ranked;
         }
         public override char GetLetterGrade(double averageGrade)
-        {
+        {  
             if (Students.Count < 5)
             {
                 throw new InvalidOperationException();
             }
-            Students.Sort((emp1, emp2) => emp1.AverageGrade.CompareTo(emp2.AverageGrade));
+            List<Student> v = new List<Student>(Students);
+            v.Sort((student1, student2) => student1.AverageGrade.CompareTo(student2.AverageGrade));
             
             
 
-           if(averageGrade >= Students[(int)(Students.Count * 0.8)].AverageGrade)
+           if(averageGrade >= v[(int)(v.Count * 0.8)].AverageGrade)
             {
                 return 'A';
             }
-            else if (averageGrade >= Students[(int)(Students.Count * 0.6)].AverageGrade)
+            else if (averageGrade >= v[(int)(v.Count * 0.6)].AverageGrade)
             {
                 return 'B';
             }
-            else if (averageGrade >= Students[(int)(Students.Count * 0.4)].AverageGrade)
+            else if (averageGrade >= v[(int)(v.Count * 0.4)].AverageGrade)
             {
                 return 'C';
             }
-            else if (averageGrade >= Students[(int)(Students.Count * 0.2)].AverageGrade)
+            else if (averageGrade >= v[(int)(v.Count * 0.2)].AverageGrade)
             {
                 return 'D';
             }
@@ -42,7 +43,33 @@ namespace GradeBook.GradeBooks
             {
                 return 'F';
             }
+       
+        }
+        public override void CalculateStatistics()
+        {
+            if (Students.Count < 5)
+            {
+                Console.WriteLine("Ranked grading requires at least 5 students.");
 
+            }
+            else
+            {
+                base.CalculateStatistics();
+            }
+
+        }
+        public override void CalculateStudentStatistics(string name)
+        {
+            if (Students.Count < 5)
+            {
+                Console.WriteLine("Ranked grading requires at least 5 students.");
+
+            }
+            else
+            {
+                base.CalculateStudentStatistics(name);
+
+            }
         }
     }
 }
