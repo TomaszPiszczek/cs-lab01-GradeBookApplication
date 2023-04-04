@@ -34,29 +34,33 @@ namespace GradeBook.UserInterfaces
         public static BaseGradeBook CreateCommand(string command)
         {
             var parts = command.Split(' ');
-            if (parts.Length != 3)
+            if (parts.Length != 4)
             {
-                Console.WriteLine("Command not valid, Create requires a name and type of gradebook.");
+                Console.WriteLine("Command not valid, Create requires a name, type of gradebook, if it's weighted (true / false)..");
                 return null;
             }
             var name = parts[1];
-         /*   BaseGradeBook gradeBook = new BaseGradeBook(name);
+            RankedGradeBook gradeBook = new RankedGradeBook(name,true);
             Console.WriteLine("Created gradebook {0}.", name);
-            GradeBookUserInterface.CommandLoop(gradeBook);*/
+          
             
             if (command=="standard")
             {
-                return new StandardGradeBook(name);
+                return new StandardGradeBook(name, parts[3].IsNormalized());
 
             }
-            if (command =="ranked")
+            else if (command =="ranked")
             {
-                return new RankedGradeBook(name);
+                return new RankedGradeBook(name, parts[3].IsNormalized());
 
             }
 
-            Console.WriteLine(parts[2] + " is not a supported type of gradebook, please try again");
+
+            Console.WriteLine("standard");
             return null;
+
+
+
         }
 
         public static void LoadCommand(string command)
@@ -88,6 +92,8 @@ namespace GradeBook.UserInterfaces
             Console.WriteLine("Help - Displays all accepted commands.");
             Console.WriteLine();
             Console.WriteLine("Quit - Exits the application");
+            Console.WriteLine();
+            Console.WriteLine("Create 'Name' 'Type' 'Weighted' - Creates a new gradebook where 'Name' is the name of the gradebook, 'Type' is what type of grading it should use, and 'Weighted' is whether or not grades should be weighted (true or false).");
         }
     }
 }
